@@ -1,12 +1,413 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <p>Hello World</p>
-    <p>azegami</p>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Re:Create | 麗陵祭</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: sans-serif;
+      }
+
+      .hero {
+        min-height: 100vh;
+        min-height: 100svh;
+      }
+
+      .hero {
+        position: relative;
+        display: grid;
+        place-content: center;
+        text-align: center;
+        padding: 24px;
+        animation: hero-fade-in 2s ease-out 0.2s both;
+      }
+
+      @keyframes hero-fade-in {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .hero {
+          animation: none;
+        }
+      }
+
+      .hero h1 {
+        margin: 0;
+        font-size: clamp(4rem, 12vw, 8rem);
+      }
+
+      .hero p {
+        margin: 4px 0 0;
+        font-size: clamp(1.25rem, 3vw, 2rem);
+      }
+
+      .games-section {
+        padding: 24px 0 48px;
+      }
+
+
+      .game-card {
+        padding: 10px 0 220px;
+      }
+
+      @keyframes game-card-fade-in {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes game-card-rise-in {
+        from {
+          transform: translateY(100px);
+        }
+        to {
+          transform: translateY(0);
+        }
+      }
+
+      @supports (animation-timeline: view()) {
+        .game-card > .game-banner,
+        .game-card > h3,
+        .game-card > .game-genre,
+        .game-card > .game-gallery > .gallery-main,
+        .game-card > .game-gallery > .gallery-thumbnails,
+        .game-card > p:not(.game-genre) {
+          animation-name: game-card-fade-in, game-card-rise-in;
+          animation-timing-function: linear, linear;
+          animation-fill-mode: both, both;
+          animation-timeline: view(block), view(block);
+          animation-range: entry 75% cover 35%, entry 0% cover 30%;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .game-card > .game-banner,
+        .game-card > h3,
+        .game-card > .game-genre,
+        .game-card > .game-gallery > .gallery-main,
+        .game-card > .game-gallery > .gallery-thumbnails,
+        .game-card > p:not(.game-genre) {
+          animation: none;
+        }
+      }
+
+      .game-banner {
+        width: min(90vw, 960px);
+        aspect-ratio: 16 / 4;
+        margin: 80px auto 16px;
+        border: 1px solid currentColor;
+        border-radius: 3px;
+        background: #fff;
+        display: grid;
+        place-items: center;
+        text-align: center;
+      }
+      
+      .game-banner p {
+        font-size: 128px;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .game-card .game-banner p {
+        margin: 0;
+        font-size: clamp(1.5rem, 3vw, 3rem);
+        font-weight: 700;
+        line-height: 1.2;
+      }
+
+      .game-card h3 {
+        margin: 0 24px;
+        text-align: center;
+        font-size: clamp(2.5rem, 9vw, 5rem);
+      }
+
+      .game-card .game-genre {
+        width: fit-content;
+        max-width: calc(100% - 48px);
+        margin: 12px auto 0;
+        padding: 0;
+        text-align: center;
+        font-size: clamp(1rem, 3vw, 1.5rem);
+      }
+
+      .game-genre + .game-gallery {
+        margin-top: 16px;
+      }
+
+      .game-card p {
+        max-width: 36rem;
+        margin: 16px auto 24px;
+        padding: 30px 24px 40px;
+        text-align: center;
+        font-size: clamp(1rem, 2.5vw, 1.25rem);
+        line-height: 1.8;
+      }
+
+      .site-footer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .site-footer p {
+        margin-bottom: 24px;
+        opacity: 0.5;
+        font-size: clamp(0.75rem, 2vw, 1rem);
+      }
+
+      .game-gallery {
+        position: relative;
+      }
+
+      .gallery-choice {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        clip-path: inset(50%);
+      }
+
+      .gallery-main {
+        position: relative;
+        width: min(90vw, 960px);
+        aspect-ratio: 16 / 9;
+        margin: 0 auto 16px;
+        border: 1px solid currentColor;
+        border-radius: 3px;
+      }
+
+      .gallery-photo {
+        position: absolute;
+        inset: 0;
+        display: none;
+        place-items: center;
+        background-color: #fff;
+        background-image: var(--bg, none);
+        background-size: cover;
+        background-position: center;
+      }
+
+      .gallery-thumbnails {
+        display: flex;
+        gap: 16px;
+        overflow-x: auto;
+        padding: 0 24px 12px;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        scrollbar-width: thin;
+      }
+
+      @media (min-width: 768px) {
+        .gallery-thumbnails {
+          justify-content: center;
+        }
+      }
+
+      .game-image-placeholder {
+        display: grid;
+        flex: 0 0 min(35vw, 160px);
+        place-items: center;
+        aspect-ratio: 16 / 9;
+        border: 1px solid currentColor;
+        font-size: 1rem;
+        scroll-snap-align: center;
+        cursor: pointer;
+        opacity: 0.4;
+        filter: grayscale(0.2) blur(0.5px);
+        transition: opacity 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      #game-1-image-1:checked ~ .gallery-main .photo-1,
+      #game-1-image-2:checked ~ .gallery-main .photo-2,
+      #game-1-image-3:checked ~ .gallery-main .photo-3,
+      #game-1-image-4:checked ~ .gallery-main .photo-4,
+      #game-2-image-1:checked ~ .gallery-main .photo-1,
+      #game-2-image-2:checked ~ .gallery-main .photo-2,
+      #game-2-image-3:checked ~ .gallery-main .photo-3,
+      #game-2-image-4:checked ~ .gallery-main .photo-4,
+      #game-3-image-1:checked ~ .gallery-main .photo-1,
+      #game-3-image-2:checked ~ .gallery-main .photo-2,
+      #game-3-image-3:checked ~ .gallery-main .photo-3,
+      #game-3-image-4:checked ~ .gallery-main .photo-4 {
+        display: grid;
+      }
+
+      #game-1-image-1:checked ~ .gallery-thumbnails label[for="game-1-image-1"],
+      #game-1-image-2:checked ~ .gallery-thumbnails label[for="game-1-image-2"],
+      #game-1-image-3:checked ~ .gallery-thumbnails label[for="game-1-image-3"],
+      #game-1-image-4:checked ~ .gallery-thumbnails label[for="game-1-image-4"],
+      #game-2-image-1:checked ~ .gallery-thumbnails label[for="game-2-image-1"],
+      #game-2-image-2:checked ~ .gallery-thumbnails label[for="game-2-image-2"],
+      #game-2-image-3:checked ~ .gallery-thumbnails label[for="game-2-image-3"],
+      #game-2-image-4:checked ~ .gallery-thumbnails label[for="game-2-image-4"],
+      #game-3-image-1:checked ~ .gallery-thumbnails label[for="game-3-image-1"],
+      #game-3-image-2:checked ~ .gallery-thumbnails label[for="game-3-image-2"],
+      #game-3-image-3:checked ~ .gallery-thumbnails label[for="game-3-image-3"],
+      #game-3-image-4:checked ~ .gallery-thumbnails label[for="game-3-image-4"] {
+        position: relative;
+        z-index: 1;
+        border: 4px solid #60aaff;
+        outline: 2px solid #fff;
+        outline-offset: -2px;
+        opacity: 1;
+        filter: none;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="hero">
+      <h1>Re:Create</h1>
+      <p>麗陵祭 ゲーム展示</p>
+      <p>10.31~11.1</p>
+    </header>
+
+    <main>
+      <section class="games-section" id="games" aria-labelledby="games-heading">
+
+        <article class="game-card" id="game-1">
+          <div class="game-banner" aria-label="ゲーム１のバナー">
+            <p>タイトルバナー１</p>
+          </div>
+          <p class="game-genre">（ジャンル）</p>
+          <div class="game-gallery" aria-label="ゲーム 1 のプレイ画像">
+            <input class="gallery-choice" type="radio" name="game-1-gallery" id="game-1-image-1" checked />
+            <input class="gallery-choice" type="radio" name="game-1-gallery" id="game-1-image-2" />
+            <input class="gallery-choice" type="radio" name="game-1-gallery" id="game-1-image-3" />
+            <input class="gallery-choice" type="radio" name="game-1-gallery" id="game-1-image-4" />
+            <div class="gallery-main">
+              <div class="gallery-photo photo-1">大きい画像 1</div>
+              <div class="gallery-photo photo-2" style="--bg: url('img/img3.gif');"></div>
+              <div class="gallery-photo photo-3" style="--bg: url('img/img2.jpg');"></div>
+              <div class="gallery-photo photo-4" style="--bg: url('img/img1.jpg');"></div>
+            </div>
+            <div class="gallery-thumbnails" aria-label="画像を選択">
+              <label class="game-image-placeholder" for="game-1-image-1">画像 1</label>
+              <label class="game-image-placeholder" for="game-1-image-2">画像 2</label>
+              <label class="game-image-placeholder" for="game-1-image-3">画像 3</label>
+              <label class="game-image-placeholder" for="game-1-image-4">画像 4</label>
+            </div>
+          </div>
+          <p>ゲームの内容や遊び方を簡単に紹介</p>
+        </article>
+
+        <article class="game-card" id="game-2">
+          <div class="game-banner" aria-label="ゲーム２のバナー">
+            <p>タイトルバナー２</p>
+          </div>
+          <p class="game-genre">（ジャンル）</p>
+          <div class="game-gallery" aria-label="ゲーム 2 のプレイ画像">
+            <input class="gallery-choice" type="radio" name="game-2-gallery" id="game-2-image-1" checked />
+            <input class="gallery-choice" type="radio" name="game-2-gallery" id="game-2-image-2" />
+            <input class="gallery-choice" type="radio" name="game-2-gallery" id="game-2-image-3" />
+            <input class="gallery-choice" type="radio" name="game-2-gallery" id="game-2-image-4" />
+            <div class="gallery-main">
+              <div class="gallery-photo photo-1">大きい画像 1</div>
+              <div class="gallery-photo photo-2">大きい画像 2</div>
+              <div class="gallery-photo photo-3">大きい画像 3</div>
+              <div class="gallery-photo photo-4">大きい画像 4</div>
+            </div>
+            <div class="gallery-thumbnails" aria-label="画像を選択">
+              <label class="game-image-placeholder" for="game-2-image-1">画像 1</label>
+              <label class="game-image-placeholder" for="game-2-image-2">画像 2</label>
+              <label class="game-image-placeholder" for="game-2-image-3">画像 3</label>
+              <label class="game-image-placeholder" for="game-2-image-4">画像 4</label>
+            </div>
+          </div>
+          <p>ゲームの内容や遊び方を簡単に紹介</p>
+        </article>
+
+        <article class="game-card" id="game-3">
+          <div class="game-banner" aria-label="ゲーム３のバナー">
+            <p>タイトルバナー３</p>
+          </div>
+          <p class="game-genre">（ジャンル）</p>
+          <div class="game-gallery" aria-label="ゲーム 3 のプレイ画像">
+            <input class="gallery-choice" type="radio" name="game-3-gallery" id="game-3-image-1" checked />
+            <input class="gallery-choice" type="radio" name="game-3-gallery" id="game-3-image-2" />
+            <input class="gallery-choice" type="radio" name="game-3-gallery" id="game-3-image-3" />
+            <input class="gallery-choice" type="radio" name="game-3-gallery" id="game-3-image-4" />
+            <div class="gallery-main">
+              <div class="gallery-photo photo-1">大きい画像 1</div>
+              <div class="gallery-photo photo-2">大きい画像 2</div>
+              <div class="gallery-photo photo-3">大きい画像 3</div>
+              <div class="gallery-photo photo-4">大きい画像 4</div>
+            </div>
+            <div class="gallery-thumbnails" aria-label="画像を選択">
+              <label class="game-image-placeholder" for="game-3-image-1">画像 1</label>
+              <label class="game-image-placeholder" for="game-3-image-2">画像 2</label>
+              <label class="game-image-placeholder" for="game-3-image-3">画像 3</label>
+              <label class="game-image-placeholder" for="game-3-image-4">画像 4</label>
+            </div>
+          </div>
+          <p>ゲームの内容や遊び方を簡単に紹介</p>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Re:Create</p>
+      <p>© 2026 麗陵祭</p>
+      <p>CC BY-NC-SA 4.0</p>
+    </footer>
+    <script>
+      document.querySelectorAll(".game-gallery").forEach((gallery) => {
+        gallery.querySelectorAll(".gallery-choice").forEach((choice, index) => {
+          const photo = gallery.querySelector(`.photo-${index + 1}`);
+          const thumbnail = gallery.querySelector(`label[for="${choice.id}"]`);
+
+          if (!photo || !thumbnail) return;
+
+          const image = getComputedStyle(photo).backgroundImage;
+          if (image === "none") return;
+
+          thumbnail.style.backgroundSize = "cover";
+          thumbnail.style.backgroundPosition = "center";
+          thumbnail.style.color = "transparent";
+
+          const imageUrl = image.match(/^url\(["']?(.*?)["']?\)$/)?.[1];
+          if (!imageUrl || !/\.(gif|webp)$/i.test(new URL(imageUrl, document.baseURI).pathname)) {
+            thumbnail.style.backgroundImage = image;
+            return;
+          }
+
+          const source = new Image();
+          source.onload = () => {
+            const canvas = document.createElement("canvas");
+            canvas.width = source.naturalWidth;
+            canvas.height = source.naturalHeight;
+            canvas.getContext("2d").drawImage(source, 0, 0);
+            thumbnail.style.backgroundImage = `url("${canvas.toDataURL("image/png")}")`;
+          };
+          source.onerror = () => {
+            console.error(`썸네일 GIF를 불러오지 못했습니다: ${imageUrl}`);
+          };
+          source.src = imageUrl;
+        });
+      });
+    </script>
+  </body>
 </html>
