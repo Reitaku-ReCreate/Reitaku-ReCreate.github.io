@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Re:Create | 麗陵祭</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&family=Zen+Kaku+Gothic+New:wght@700&display=swap"
+      rel="stylesheet"
+    />
     <style>
       * {
         box-sizing: border-box;
@@ -15,7 +21,13 @@
 
       body {
         margin: 0;
-        font-family: sans-serif;
+        font-family: Arial, "Kosugi Maru", sans-serif;
+        color: #fff;
+        background:
+          radial-gradient(ellipse 72% 58% at 12% 24%, rgba(72, 110, 235, 0.152), transparent 72%),
+          radial-gradient(ellipse 70% 60% at 88% 72%, rgba(74, 222, 215, 0.108), transparent 72%),
+          #080b18;
+        background-attachment: fixed;
       }
 
       .hero {
@@ -29,7 +41,13 @@
         place-content: center;
         text-align: center;
         padding: 24px;
+        transform: translateY(-30px);
         animation: hero-fade-in 2s ease-out 0.2s both;
+      }
+
+      .subhero {
+        color: #ffffff9c;
+        animation: hero-fade-in 1.5s ease-out 1s both;
       }
 
       @keyframes hero-fade-in {
@@ -42,14 +60,17 @@
       }
 
       @media (prefers-reduced-motion: reduce) {
-        .hero {
+        .hero,
+        .subhero {
           animation: none;
         }
       }
 
       .hero h1 {
         margin: 0;
+        font-family: "Zen Kaku Gothic New", Arial, sans-serif;
         font-size: clamp(4rem, 12vw, 8rem);
+        color: #fff;
       }
 
       .hero p {
@@ -63,7 +84,7 @@
 
 
       .game-card {
-        padding: 10px 0 220px;
+        padding: 10px 0 120px;
       }
 
       @keyframes game-card-fade-in {
@@ -84,6 +105,24 @@
         }
       }
 
+      @keyframes game-card-fade-out {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+
+      @keyframes game-card-rise-out {
+        from {
+          transform: translateY(0);
+        }
+        to {
+          transform: translateY(-100px);
+        }
+      }
+
       @supports (animation-timeline: view()) {
         .game-card > .game-banner,
         .game-card > h3,
@@ -91,11 +130,23 @@
         .game-card > .game-gallery > .gallery-main,
         .game-card > .game-gallery > .gallery-thumbnails,
         .game-card > p:not(.game-genre) {
-          animation-name: game-card-fade-in, game-card-rise-in;
-          animation-timing-function: linear, linear;
-          animation-fill-mode: both, both;
-          animation-timeline: view(block), view(block);
-          animation-range: entry 75% cover 35%, entry 0% cover 30%;
+          animation-name:
+            game-card-fade-in,
+            game-card-rise-in,
+            game-card-fade-out,
+            game-card-rise-out;
+          animation-timing-function: linear, linear, linear, linear;
+          animation-fill-mode: both, both, none, none;
+          animation-timeline:
+            view(block),
+            view(block),
+            view(block),
+            view(block);
+          animation-range:
+            entry 75% cover 25%,
+            entry 25% cover 20%,
+            exit 0% exit 50%,
+            exit 0% exit 100%;
         }
       }
 
@@ -116,7 +167,8 @@
         margin: 80px auto 16px;
         border: 1px solid currentColor;
         border-radius: 3px;
-        background: #fff;
+        background: rgba(255, 255, 255, 0.04);
+        background-color: #101426;
         display: grid;
         place-items: center;
         text-align: center;
@@ -126,6 +178,7 @@
         font-size: 128px;
         font-weight: bold;
         text-align: center;
+        font-family: Arial, "Kosugi Maru", sans-serif;
       }
 
       .game-card .game-banner p {
@@ -138,6 +191,7 @@
       .game-card h3 {
         margin: 0 24px;
         text-align: center;
+        font-family: Arial, "Kosugi Maru", sans-serif;
         font-size: clamp(2.5rem, 9vw, 5rem);
       }
 
@@ -195,9 +249,9 @@
         position: relative;
         width: min(90vw, 960px);
         aspect-ratio: 16 / 9;
-        margin: 0 auto 16px;
-        border: 1px solid currentColor;
+        margin: 0 auto 4px;
         border-radius: 3px;
+        background-color: #101426;
       }
 
       .gallery-photo {
@@ -205,20 +259,26 @@
         inset: 0;
         display: none;
         place-items: center;
-        background-color: #fff;
+        opacity: 0;
+        background-color: #101426;
         background-image: var(--bg, none);
         background-size: cover;
         background-position: center;
+        transition: opacity 0.5s ease;
       }
 
       .gallery-thumbnails {
         display: flex;
-        gap: 16px;
+        gap: 4px;
         overflow-x: auto;
-        padding: 0 24px 12px;
+        padding: 0 19px 12px;
         scroll-snap-type: x mandatory;
         scroll-behavior: smooth;
         scrollbar-width: thin;
+      }
+
+      .gallery-thumbnails::-webkit-scrollbar-track {
+        margin: 0 15%;
       }
 
       @media (min-width: 768px) {
@@ -256,6 +316,24 @@
         display: grid;
       }
 
+      .gallery-photo.is-active {
+        z-index: 2;
+        opacity: 1;
+      }
+
+      .gallery-photo.is-underlay {
+        display: grid;
+        z-index: 1;
+        opacity: 1;
+        transition: none;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .gallery-photo {
+          transition: none;
+        }
+      }
+
       #game-1-image-1:checked ~ .gallery-thumbnails label[for="game-1-image-1"],
       #game-1-image-2:checked ~ .gallery-thumbnails label[for="game-1-image-2"],
       #game-1-image-3:checked ~ .gallery-thumbnails label[for="game-1-image-3"],
@@ -271,18 +349,35 @@
         position: relative;
         z-index: 1;
         border: 4px solid #60aaff;
-        outline: 2px solid #fff;
-        outline-offset: -2px;
         opacity: 1;
         filter: none;
+      }
+
+      @media (min-width: 1024px) {
+        .game-banner,
+        .gallery-main {
+          width: min(40vw, 880px);
+        }
+
+        .game-card .game-banner p {
+          font-size: clamp(1.5rem, 2.7vw, 2.7rem);
+        }
+
+        .game-card h3 {
+          font-size: clamp(2.25rem, 8vw, 4.5rem);
+        }
+
+        .game-image-placeholder {
+          flex-basis: min(32vw, 145px);
+        }
       }
     </style>
   </head>
   <body>
     <header class="hero">
       <h1>Re:Create</h1>
-      <p>麗陵祭 ゲーム展示</p>
-      <p>10.31~11.1</p>
+      <p class="subhero">麗陵祭 ゲーム展示</p>
+      <p class="subhero">10.31~11.1</p>
     </header>
 
     <main>
@@ -375,7 +470,71 @@
     </footer>
     <script>
       document.querySelectorAll(".game-gallery").forEach((gallery) => {
-        gallery.querySelectorAll(".gallery-choice").forEach((choice, index) => {
+        const choices = [...gallery.querySelectorAll(".gallery-choice")];
+        const photos = choices.map((_, index) => gallery.querySelector(`.photo-${index + 1}`));
+        const initiallySelected = choices.findIndex((choice) => choice.checked);
+        let transitionId = 0;
+
+        photos[initiallySelected]?.classList.add("is-active");
+
+        choices.forEach((choice, index) => {
+          const thumbnail = gallery.querySelector(`label[for="${choice.id}"]`);
+
+          thumbnail?.addEventListener("click", (event) => {
+            event.preventDefault();
+            if (choice.checked) return;
+
+            choice.checked = true;
+            choice.dispatchEvent(new Event("change", { bubbles: true }));
+          });
+
+          choice.addEventListener("change", () => {
+            const thumbnailList = gallery.querySelector(".gallery-thumbnails");
+
+            if (thumbnail && thumbnailList) {
+              const thumbnailRect = thumbnail.getBoundingClientRect();
+              const listRect = thumbnailList.getBoundingClientRect();
+              const targetScrollLeft =
+                thumbnailList.scrollLeft +
+                thumbnailRect.left +
+                thumbnailRect.width / 2 -
+                listRect.left -
+                listRect.width / 2;
+
+              thumbnailList.scrollTo({ left: targetScrollLeft, behavior: "smooth" });
+            }
+
+            const outgoingPhoto = gallery.querySelector(".gallery-photo.is-active");
+            const incomingPhoto = photos[index];
+
+            if (!incomingPhoto || incomingPhoto === outgoingPhoto) return;
+
+            transitionId += 1;
+            gallery.querySelectorAll(".gallery-photo.is-underlay").forEach((photo) => {
+              photo.classList.remove("is-underlay");
+            });
+
+            if (outgoingPhoto) {
+              outgoingPhoto.classList.remove("is-active");
+              outgoingPhoto.classList.add("is-underlay");
+              const currentTransitionId = transitionId;
+
+              const finishTransition = (event) => {
+                if (event && (event.target !== incomingPhoto || event.propertyName !== "opacity")) return;
+                if (transitionId !== currentTransitionId || incomingPhoto !== gallery.querySelector(".gallery-photo.is-active")) return;
+                outgoingPhoto.classList.remove("is-underlay");
+              };
+
+              incomingPhoto.addEventListener("transitionend", finishTransition, { once: true });
+              window.setTimeout(() => finishTransition(), 750);
+            }
+
+            incomingPhoto.classList.remove("is-underlay");
+            requestAnimationFrame(() => incomingPhoto.classList.add("is-active"));
+          });
+        });
+
+        choices.forEach((choice, index) => {
           const photo = gallery.querySelector(`.photo-${index + 1}`);
           const thumbnail = gallery.querySelector(`label[for="${choice.id}"]`);
 
@@ -408,6 +567,28 @@
           source.src = imageUrl;
         });
       });
+
+      const firstGameCard = document.querySelector("#game-1");
+      if (firstGameCard && window.scrollY === 0) {
+        const interactionEvents = ["pointerdown", "touchstart", "wheel", "keydown", "scroll"];
+        let autoScrollTimer;
+
+        const cancelAutoScroll = () => {
+          window.clearTimeout(autoScrollTimer);
+          interactionEvents.forEach((eventName) => {
+            window.removeEventListener(eventName, cancelAutoScroll);
+          });
+        };
+
+        interactionEvents.forEach((eventName) => {
+          window.addEventListener(eventName, cancelAutoScroll, { once: true, passive: true });
+        });
+
+        autoScrollTimer = window.setTimeout(() => {
+          cancelAutoScroll();
+          firstGameCard.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 3000);
+      }
     </script>
   </body>
 </html>
