@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Re:Create | 麗陵祭</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&family=Zen+Kaku+Gothic+New:wght@700&display=swap"
+      rel="stylesheet"
+    />
     <style>
       * {
         box-sizing: border-box;
@@ -15,7 +21,13 @@
 
       body {
         margin: 0;
-        font-family: sans-serif;
+        font-family: Arial, "Kosugi Maru", sans-serif;
+        color: #fff;
+        background:
+          radial-gradient(ellipse 72% 58% at 12% 24%, rgba(72, 110, 235, 0.152), transparent 72%),
+          radial-gradient(ellipse 70% 60% at 88% 72%, rgba(74, 222, 215, 0.108), transparent 72%),
+          #080b18;
+        background-attachment: fixed;
       }
 
       .hero {
@@ -29,7 +41,13 @@
         place-content: center;
         text-align: center;
         padding: 24px;
+        transform: translateY(-30px);
         animation: hero-fade-in 2s ease-out 0.2s both;
+      }
+
+      .subhero {
+        color: #ffffff9c;
+        animation: hero-fade-in 1.5s ease-out 1s both;
       }
 
       @keyframes hero-fade-in {
@@ -42,14 +60,17 @@
       }
 
       @media (prefers-reduced-motion: reduce) {
-        .hero {
+        .hero,
+        .subhero {
           animation: none;
         }
       }
 
       .hero h1 {
         margin: 0;
+        font-family: "Zen Kaku Gothic New", Arial, sans-serif;
         font-size: clamp(4rem, 12vw, 8rem);
+        color: #fff;
       }
 
       .hero p {
@@ -63,7 +84,7 @@
 
 
       .game-card {
-        padding: 10px 0 220px;
+        padding: 10px 0 120px;
       }
 
       @keyframes game-card-fade-in {
@@ -84,6 +105,24 @@
         }
       }
 
+      @keyframes game-card-fade-out {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+
+      @keyframes game-card-rise-out {
+        from {
+          transform: translateY(0);
+        }
+        to {
+          transform: translateY(-100px);
+        }
+      }
+
       @supports (animation-timeline: view()) {
         .game-card > .game-banner,
         .game-card > h3,
@@ -91,11 +130,23 @@
         .game-card > .game-gallery > .gallery-main,
         .game-card > .game-gallery > .gallery-thumbnails,
         .game-card > p:not(.game-genre) {
-          animation-name: game-card-fade-in, game-card-rise-in;
-          animation-timing-function: linear, linear;
-          animation-fill-mode: both, both;
-          animation-timeline: view(block), view(block);
-          animation-range: entry 75% cover 35%, entry 0% cover 30%;
+          animation-name:
+            game-card-fade-in,
+            game-card-rise-in,
+            game-card-fade-out,
+            game-card-rise-out;
+          animation-timing-function: linear, linear, linear, linear;
+          animation-fill-mode: both, both, none, none;
+          animation-timeline:
+            view(block),
+            view(block),
+            view(block),
+            view(block);
+          animation-range:
+            entry 75% cover 25%,
+            entry 25% cover 20%,
+            exit 0% exit 50%,
+            exit 0% exit 100%;
         }
       }
 
@@ -111,21 +162,24 @@
       }
 
       .game-banner {
-        width: min(90vw, 960px);
-        aspect-ratio: 16 / 4;
-        margin: 80px auto 16px;
+        width: min(60vw, 600px);
+        aspect-ratio: 2 / 1;
+        min-height: 0;
+        margin: 80px auto 8px;
         border: 1px solid currentColor;
         border-radius: 3px;
-        background: #fff;
+        background: rgba(255, 255, 255, 0.04);
+        background-color: #101426;
         display: grid;
         place-items: center;
         text-align: center;
       }
       
       .game-banner p {
-        font-size: 128px;
+        font-size: 64px;
         font-weight: bold;
         text-align: center;
+        font-family: Arial, "Kosugi Maru", sans-serif;
       }
 
       .game-card .game-banner p {
@@ -138,20 +192,22 @@
       .game-card h3 {
         margin: 0 24px;
         text-align: center;
+        font-family: Arial, "Kosugi Maru", sans-serif;
         font-size: clamp(2.5rem, 9vw, 5rem);
       }
 
       .game-card .game-genre {
         width: fit-content;
         max-width: calc(100% - 48px);
-        margin: 12px auto 0;
+        margin: 0 auto 0;
         padding: 0;
         text-align: center;
-        font-size: clamp(1rem, 3vw, 1.5rem);
+        font-size: clamp(0.85rem, 2.2vw, 1.1rem);
+        color: #ffffffc9
       }
 
       .game-genre + .game-gallery {
-        margin-top: 16px;
+        margin-top: 8px;
       }
 
       .game-card p {
@@ -163,6 +219,20 @@
         line-height: 1.8;
       }
 
+      .game-link {
+        color: #60aaff;
+      }
+
+      #game-2 > p:not(.game-genre) {
+        max-width: 40rem;
+        padding: 0 12px 0 12px;
+      }
+
+      #game-1 > p:not(.game-genre) {
+        margin: 8px auto;
+        padding: 8px 24px;
+      }
+      
       .site-footer {
         display: flex;
         justify-content: center;
@@ -193,11 +263,24 @@
 
       .gallery-main {
         position: relative;
-        width: min(90vw, 960px);
+        isolation: isolate;
+        width: min(95vw, 960px);
         aspect-ratio: 16 / 9;
-        margin: 0 auto 16px;
-        border: 1px solid currentColor;
+        margin: 0 auto 4px;
         border-radius: 3px;
+        background-color: #101426;
+      }
+
+      .gallery-main::before {
+        position: absolute;
+        z-index: -1;
+        inset: 8px;
+        border-radius: inherit;
+        background: var(--glow-color, rgba(96, 170, 255, 0.45));
+        content: "";
+        filter: blur(28px);
+        opacity: 0.75;
+        pointer-events: none;
       }
 
       .gallery-photo {
@@ -205,20 +288,27 @@
         inset: 0;
         display: none;
         place-items: center;
-        background-color: #fff;
+        opacity: 0;
+        background-color: #101426;
         background-image: var(--bg, none);
-        background-size: cover;
+        background-size: contain;
         background-position: center;
+        background-repeat: no-repeat;
+        transition: opacity 0.5s ease;
       }
 
       .gallery-thumbnails {
         display: flex;
-        gap: 16px;
+        gap: 4px;
         overflow-x: auto;
-        padding: 0 24px 12px;
+        padding: 0 19px 12px;
         scroll-snap-type: x mandatory;
         scroll-behavior: smooth;
         scrollbar-width: thin;
+      }
+
+      .gallery-thumbnails::-webkit-scrollbar-track {
+        margin: 0 15%;
       }
 
       @media (min-width: 768px) {
@@ -256,6 +346,65 @@
         display: grid;
       }
 
+      .gallery-photo.is-active {
+        z-index: 2;
+        opacity: 1;
+      }
+
+      .gallery-photo.is-underlay {
+        display: grid;
+        z-index: 1;
+        opacity: 1;
+        transition: none;
+      }
+
+      .gallery-nav-button {
+        position: absolute;
+        top: 50%;
+        z-index: 3;
+        display: grid;
+        min-width: 44px;
+        height: 84px;
+        place-items: center;
+        padding: 0;
+        border: 0;
+        color: #fff;
+        background: transparent;
+        font-family: Arial, sans-serif;
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 300;
+        line-height: 1;
+        cursor: pointer;
+        opacity: 0.65;
+        transform: translateY(-50%) scaleY(1.5) scaleX(0.8);
+        transition: opacity 0.2s ease;
+      }
+
+      .gallery-nav-button:hover,
+      .gallery-nav-button:focus-visible {
+        opacity: 1;
+      }
+
+      .gallery-nav-button:focus-visible {
+        outline: 2px solid #fff;
+        outline-offset: 3px;
+      }
+
+      .gallery-nav-button--previous {
+        left: 12px;
+      }
+
+      .gallery-nav-button--next {
+        right: 12px;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .gallery-photo,
+        .gallery-nav-button {
+          transition: none;
+        }
+      }
+
       #game-1-image-1:checked ~ .gallery-thumbnails label[for="game-1-image-1"],
       #game-1-image-2:checked ~ .gallery-thumbnails label[for="game-1-image-2"],
       #game-1-image-3:checked ~ .gallery-thumbnails label[for="game-1-image-3"],
@@ -271,18 +420,38 @@
         position: relative;
         z-index: 1;
         border: 4px solid #60aaff;
-        outline: 2px solid #fff;
-        outline-offset: -2px;
         opacity: 1;
         filter: none;
+      }
+
+      @media (min-width: 1024px) {
+        .game-banner {
+          width: min(40vw, 880px);
+        }
+
+        .gallery-main {
+          width: min(44vw, 920px);
+        }
+
+        .game-card .game-banner p {
+          font-size: clamp(1.5rem, 2.7vw, 2.7rem);
+        }
+
+        .game-card h3 {
+          font-size: clamp(2.25rem, 8vw, 4.5rem);
+        }
+
+        .game-image-placeholder {
+          flex-basis: min(32vw, 145px);
+        }
       }
     </style>
   </head>
   <body>
     <header class="hero">
       <h1>Re:Create</h1>
-      <p>麗陵祭 ゲーム展示</p>
-      <p>10.31~11.1</p>
+      <p class="subhero">麗陵祭 ゲーム展示</p>
+      <p class="subhero">10.31~11.1</p>
     </header>
 
     <main>
@@ -290,19 +459,21 @@
 
         <article class="game-card" id="game-1">
           <div class="game-banner" aria-label="ゲーム１のバナー">
-            <p>タイトルバナー１</p>
+            <p>ピクセルナイトアドベンチャー</p>
           </div>
-          <p class="game-genre">（ジャンル）</p>
+          <p class="game-genre">アクション</p>
           <div class="game-gallery" aria-label="ゲーム 1 のプレイ画像">
             <input class="gallery-choice" type="radio" name="game-1-gallery" id="game-1-image-1" checked />
             <input class="gallery-choice" type="radio" name="game-1-gallery" id="game-1-image-2" />
             <input class="gallery-choice" type="radio" name="game-1-gallery" id="game-1-image-3" />
             <input class="gallery-choice" type="radio" name="game-1-gallery" id="game-1-image-4" />
             <div class="gallery-main">
-              <div class="gallery-photo photo-1">大きい画像 1</div>
-              <div class="gallery-photo photo-2" style="--bg: url('img/img3.gif');"></div>
-              <div class="gallery-photo photo-3" style="--bg: url('img/img2.jpg');"></div>
-              <div class="gallery-photo photo-4" style="--bg: url('img/img1.jpg');"></div>
+              <div class="gallery-photo photo-1" style="--bg: url('img/pixelknight/screenshot_pixelknight_1.png');"></div>
+              <div class="gallery-photo photo-2" style="--bg: url('img/pixelknight/screenshot_pixelknight_2.png');"></div>
+              <div class="gallery-photo photo-3" style="--bg: url('img/pixelknight/screenshot_pixelknight_3.png');"></div>
+              <div class="gallery-photo photo-4" style="--bg: url('img/pixelknight/screenshot_pixelknight_4.png');"></div>
+              <button class="gallery-nav-button gallery-nav-button--previous" type="button" aria-label="前の画像">&lt;</button>
+              <button class="gallery-nav-button gallery-nav-button--next" type="button" aria-label="次の画像">&gt;</button>
             </div>
             <div class="gallery-thumbnails" aria-label="画像を選択">
               <label class="game-image-placeholder" for="game-1-image-1">画像 1</label>
@@ -311,24 +482,45 @@
               <label class="game-image-placeholder" for="game-1-image-4">画像 4</label>
             </div>
           </div>
-          <p>ゲームの内容や遊び方を簡単に紹介</p>
+          <p>
+            簡単操作でサクっと遊べる?<br>ポップでレトロなアクションゲーム!!!<br>
+            今回の主人公は なんと…攻撃ができない!?<br>跳んで、かわして、ゴールを目指せ!!!<br>
+            7ステージごとにてごわいボスのおでましだ!!! エネルギーを集めて、仲間を召喚だ!!!
+          </p>
+          <p>
+            ＜操作方法＞<br>
+            マウスでステージ選択<br>
+            ←↑→キーで移動(WASD対応)
+          </p>
+          <p>
+            <a class="game-link" href="https://n-abe-mt.github.io/ReCreate/PixelKnight.html" target="_blank" rel="noopener noreferrer">プレイはこちらで</a>
+          </p>
+          <p>
+            ※ファイルサイズが大きいため<br>起動には少し時間がかかります<br>
+            ※ゲーム起動時に<br>暫く音が出ないことがありますが、<br>少し待てば流れます
+          </p>
         </article>
 
         <article class="game-card" id="game-2">
-          <div class="game-banner" aria-label="ゲーム２のバナー">
-            <p>タイトルバナー２</p>
+          <div
+            class="game-banner"
+            aria-label="ゲーム２のバナー"
+            style="background-image: url('img/dotstep/banner.png'); background-size: cover; background-position: center;"
+          >
           </div>
-          <p class="game-genre">（ジャンル）</p>
+          <p class="game-genre">音楽ゲーム</p>
           <div class="game-gallery" aria-label="ゲーム 2 のプレイ画像">
             <input class="gallery-choice" type="radio" name="game-2-gallery" id="game-2-image-1" checked />
             <input class="gallery-choice" type="radio" name="game-2-gallery" id="game-2-image-2" />
             <input class="gallery-choice" type="radio" name="game-2-gallery" id="game-2-image-3" />
             <input class="gallery-choice" type="radio" name="game-2-gallery" id="game-2-image-4" />
             <div class="gallery-main">
-              <div class="gallery-photo photo-1">大きい画像 1</div>
-              <div class="gallery-photo photo-2">大きい画像 2</div>
-              <div class="gallery-photo photo-3">大きい画像 3</div>
-              <div class="gallery-photo photo-4">大きい画像 4</div>
+              <div class="gallery-photo photo-1" style="--bg: url('img/dotstep/image0.png');"></div>
+              <div class="gallery-photo photo-2" style="--bg: url('img/dotstep/image1.png');"></div>
+              <div class="gallery-photo photo-3" style="--bg: url('img/dotstep/image2.png');"></div>
+              <div class="gallery-photo photo-4" style="--bg: url('img/dotstep/image3.png');"></div>
+              <button class="gallery-nav-button gallery-nav-button--previous" type="button" aria-label="前の画像">&lt;</button>
+              <button class="gallery-nav-button gallery-nav-button--next" type="button" aria-label="次の画像">&gt;</button>
             </div>
             <div class="gallery-thumbnails" aria-label="画像を選択">
               <label class="game-image-placeholder" for="game-2-image-1">画像 1</label>
@@ -337,24 +529,26 @@
               <label class="game-image-placeholder" for="game-2-image-4">画像 4</label>
             </div>
           </div>
-          <p>ゲームの内容や遊び方を簡単に紹介</p>
+          <p>画面中央の丸の枠とノーツ（丸）が重なるときに<br>タイミングよくボタンを押す音楽ゲームです。</p>
         </article>
 
         <article class="game-card" id="game-3">
           <div class="game-banner" aria-label="ゲーム３のバナー">
-            <p>タイトルバナー３</p>
+            <p>サンプル</p>
           </div>
           <p class="game-genre">（ジャンル）</p>
           <div class="game-gallery" aria-label="ゲーム 3 のプレイ画像">
-            <input class="gallery-choice" type="radio" name="game-3-gallery" id="game-3-image-1" checked />
-            <input class="gallery-choice" type="radio" name="game-3-gallery" id="game-3-image-2" />
+            <input class="gallery-choice" type="radio" name="game-3-gallery" id="game-3-image-1" />
+            <input class="gallery-choice" type="radio" name="game-3-gallery" id="game-3-image-2" checked />
             <input class="gallery-choice" type="radio" name="game-3-gallery" id="game-3-image-3" />
             <input class="gallery-choice" type="radio" name="game-3-gallery" id="game-3-image-4" />
             <div class="gallery-main">
               <div class="gallery-photo photo-1">大きい画像 1</div>
-              <div class="gallery-photo photo-2">大きい画像 2</div>
-              <div class="gallery-photo photo-3">大きい画像 3</div>
-              <div class="gallery-photo photo-4">大きい画像 4</div>
+              <div class="gallery-photo photo-2" style="--bg: url('img/img3.gif');"></div>
+              <div class="gallery-photo photo-3" style="--bg: url('img/img2.jpg');"></div>
+              <div class="gallery-photo photo-4" style="--bg: url('img/img1.jpg');"></div>
+              <button class="gallery-nav-button gallery-nav-button--previous" type="button" aria-label="前の画像">&lt;</button>
+              <button class="gallery-nav-button gallery-nav-button--next" type="button" aria-label="次の画像">&gt;</button>
             </div>
             <div class="gallery-thumbnails" aria-label="画像を選択">
               <label class="game-image-placeholder" for="game-3-image-1">画像 1</label>
@@ -375,7 +569,137 @@
     </footer>
     <script>
       document.querySelectorAll(".game-gallery").forEach((gallery) => {
-        gallery.querySelectorAll(".gallery-choice").forEach((choice, index) => {
+        const choices = [...gallery.querySelectorAll(".gallery-choice")];
+        const photos = choices.map((_, index) => gallery.querySelector(`.photo-${index + 1}`));
+        const initiallySelected = choices.findIndex((choice) => choice.checked);
+        const galleryMain = gallery.querySelector(".gallery-main");
+        const colorCache = new Map();
+        let glowRequestId = 0;
+        let transitionId = 0;
+
+        const updateGalleryGlow = (photo) => {
+          if (!galleryMain || !photo) return;
+
+          const image = getComputedStyle(photo).backgroundImage;
+          const imageUrl = image.match(/^url\(["']?(.*?)["']?\)$/)?.[1];
+          if (!imageUrl) {
+            galleryMain.style.removeProperty("--glow-color");
+            return;
+          }
+
+          const requestId = ++glowRequestId;
+          const cachedColor = colorCache.get(imageUrl);
+          if (cachedColor) {
+            galleryMain.style.setProperty("--glow-color", cachedColor);
+            return;
+          }
+
+          const source = new Image();
+          source.onload = () => {
+            if (requestId !== glowRequestId) return;
+
+            const canvas = document.createElement("canvas");
+            canvas.width = 1;
+            canvas.height = 1;
+            const context = canvas.getContext("2d");
+
+            if (!context) {
+              console.error(`이미지 색상을 추출할 수 없습니다: ${imageUrl}`);
+              return;
+            }
+
+            try {
+              context.drawImage(source, 0, 0, 1, 1);
+              const [red, green, blue] = context.getImageData(0, 0, 1, 1).data;
+              const color = `rgba(${red}, ${green}, ${blue}, 0.55)`;
+              colorCache.set(imageUrl, color);
+              galleryMain.style.setProperty("--glow-color", color);
+            } catch (error) {
+              console.error(`이미지 색상을 추출할 수 없습니다: ${imageUrl}`, error);
+            }
+          };
+          source.onerror = () => {
+            if (requestId === glowRequestId) {
+              console.error(`이미지를 불러오지 못해 반사광을 적용할 수 없습니다: ${imageUrl}`);
+            }
+          };
+          source.src = imageUrl;
+        };
+
+        photos[initiallySelected]?.classList.add("is-active");
+        updateGalleryGlow(photos[initiallySelected]);
+
+        gallery.querySelectorAll(".gallery-nav-button").forEach((button) => {
+          button.addEventListener("click", () => {
+            const currentIndex = choices.findIndex((choice) => choice.checked);
+            if (currentIndex < 0) return;
+
+            const direction = button.classList.contains("gallery-nav-button--next") ? 1 : -1;
+            const nextIndex = (currentIndex + direction + choices.length) % choices.length;
+            choices[nextIndex].checked = true;
+            choices[nextIndex].dispatchEvent(new Event("change", { bubbles: true }));
+          });
+        });
+
+        choices.forEach((choice, index) => {
+          const thumbnail = gallery.querySelector(`label[for="${choice.id}"]`);
+
+          thumbnail?.addEventListener("click", (event) => {
+            event.preventDefault();
+            if (choice.checked) return;
+
+            choice.checked = true;
+            choice.dispatchEvent(new Event("change", { bubbles: true }));
+          });
+
+          choice.addEventListener("change", () => {
+            const thumbnailList = gallery.querySelector(".gallery-thumbnails");
+
+            if (thumbnail && thumbnailList) {
+              const thumbnailRect = thumbnail.getBoundingClientRect();
+              const listRect = thumbnailList.getBoundingClientRect();
+              const targetScrollLeft =
+                thumbnailList.scrollLeft +
+                thumbnailRect.left +
+                thumbnailRect.width / 2 -
+                listRect.left -
+                listRect.width / 2;
+
+              thumbnailList.scrollTo({ left: targetScrollLeft, behavior: "smooth" });
+            }
+
+            const outgoingPhoto = gallery.querySelector(".gallery-photo.is-active");
+            const incomingPhoto = photos[index];
+
+            if (!incomingPhoto || incomingPhoto === outgoingPhoto) return;
+
+            updateGalleryGlow(incomingPhoto);
+            transitionId += 1;
+            gallery.querySelectorAll(".gallery-photo.is-underlay").forEach((photo) => {
+              photo.classList.remove("is-underlay");
+            });
+
+            if (outgoingPhoto) {
+              outgoingPhoto.classList.remove("is-active");
+              outgoingPhoto.classList.add("is-underlay");
+              const currentTransitionId = transitionId;
+
+              const finishTransition = (event) => {
+                if (event && (event.target !== incomingPhoto || event.propertyName !== "opacity")) return;
+                if (transitionId !== currentTransitionId || incomingPhoto !== gallery.querySelector(".gallery-photo.is-active")) return;
+                outgoingPhoto.classList.remove("is-underlay");
+              };
+
+              incomingPhoto.addEventListener("transitionend", finishTransition, { once: true });
+              window.setTimeout(() => finishTransition(), 750);
+            }
+
+            incomingPhoto.classList.remove("is-underlay");
+            requestAnimationFrame(() => incomingPhoto.classList.add("is-active"));
+          });
+        });
+
+        choices.forEach((choice, index) => {
           const photo = gallery.querySelector(`.photo-${index + 1}`);
           const thumbnail = gallery.querySelector(`label[for="${choice.id}"]`);
 
@@ -408,6 +732,28 @@
           source.src = imageUrl;
         });
       });
+
+      const firstGameCard = document.querySelector("#game-1");
+      if (firstGameCard && window.scrollY === 0) {
+        const interactionEvents = ["pointerdown", "touchstart", "wheel", "keydown", "scroll"];
+        let autoScrollTimer;
+
+        const cancelAutoScroll = () => {
+          window.clearTimeout(autoScrollTimer);
+          interactionEvents.forEach((eventName) => {
+            window.removeEventListener(eventName, cancelAutoScroll);
+          });
+        };
+
+        interactionEvents.forEach((eventName) => {
+          window.addEventListener(eventName, cancelAutoScroll, { once: true, passive: true });
+        });
+
+        autoScrollTimer = window.setTimeout(() => {
+          cancelAutoScroll();
+          firstGameCard.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 3500);
+      }
     </script>
   </body>
 </html>
