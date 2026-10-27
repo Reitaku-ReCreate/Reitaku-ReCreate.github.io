@@ -20,6 +20,10 @@
       }
 
       body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        min-height: 100svh;
         margin: 0;
         font-family: Arial, "Kosugi Maru", sans-serif;
         color: #fff;
@@ -28,6 +32,10 @@
           radial-gradient(ellipse 70% 60% at 88% 72%, rgba(74, 222, 215, 0.108), transparent 72%),
           #080b18;
         background-attachment: fixed;
+      }
+
+      main {
+        flex: 1;
       }
 
       .hero {
@@ -43,6 +51,13 @@
         padding: 24px;
         transform: translateY(-30px);
         animation: hero-fade-in 2s ease-out 0.2s both;
+        transition: min-height 1.2s ease, transform 1.2s ease;
+      }
+
+      .hero.hero--condensed {
+        min-height: clamp(220px, 30svh, 280px);
+        padding: 16px;
+        transform: translateY(60px);
       }
 
       .subhero {
@@ -64,6 +79,10 @@
         .subhero {
           animation: none;
         }
+
+        .hero {
+          transition: none;
+        }
       }
 
       .hero h1 {
@@ -79,12 +98,138 @@
       }
 
       .games-section {
-        padding: 24px 0 48px;
+        padding: 0 0 48px;
       }
 
+      .game-picker {
+        padding: 88px 0 0px;
+      }
+
+      .game-picker h2 {
+        margin: 0 24px 20px;
+        text-align: center;
+        font-size: clamp(1.5rem, 4vw, 2rem);
+      }
+
+      .game-picker-controls {
+        display: flex;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 8px;
+      }
+
+      .game-picker-track {
+        display: flex;
+        flex: 1;
+        gap: 16px;
+        overflow-x: auto;
+        padding: 8px 4px 16px;
+        scroll-snap-type: none;
+        scrollbar-width: none;
+      }
+
+      .game-picker-track::-webkit-scrollbar {
+        display: none;
+      }
+
+      .game-picker-card {
+        display: grid;
+        flex: 0 0 min(64vw, 240px);
+        min-height: 120px;
+        align-content: center;
+        justify-items: center;
+        gap: 12px;
+        padding: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        color: inherit;
+        background: rgba(255, 255, 255, 0.06);
+        font: inherit;
+        cursor: pointer;
+        scroll-snap-align: center;
+        transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
+      }
+
+      .game-picker-card.is-dimmed {
+        opacity: 0.4;
+        filter: grayscale(0.2) blur(0.5px);
+      }
+
+      .game-picker-card:hover {
+        transform: translateY(-3px);
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .game-picker-card.is-selected {
+        opacity: 1;
+        filter: none;
+      }
+
+      .game-picker-card[aria-expanded="true"],
+      .game-picker-card.is-selected {
+        border-color: #60aaff;
+        background-color: rgba(96, 170, 255, 0.14);
+      }
+
+      .game-picker-card img {
+        display: block;
+        width: 100%;
+        height: 90px;
+        object-fit: contain;
+      }
+
+      .game-picker-card-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        text-align: center;
+      }
+
+      .game-card[hidden] {
+        display: none;
+      }
 
       .game-card {
-        padding: 10px 0 120px;
+        padding: 0 0 120px;
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 0.4s ease, transform 0.4s ease;
+      }
+
+      .game-card.is-open {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .game-card.is-closing {
+        opacity: 0;
+        transform: translateY(16px);
+        pointer-events: none;
+      }
+
+      .game-card.is-closing > .game-genre {
+        animation: none;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .game-card {
+          transition: none;
+        }
+      }
+
+      .game-list-return {
+        display: block;
+        margin: 24px auto 0;
+        padding: 12px 24px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 6px;
+        color: inherit;
+        background: rgba(255, 255, 255, 0.08);
+        font: inherit;
+        cursor: pointer;
+      }
+
+      .game-list-return:hover {
+        background: rgba(255, 255, 255, 0.15);
       }
 
       @keyframes game-card-fade-in {
@@ -166,13 +311,25 @@
         aspect-ratio: 2 / 1;
         min-height: 0;
         margin: 80px auto 8px;
-        border: 1px solid currentColor;
         border-radius: 3px;
         background: rgba(255, 255, 255, 0.04);
         background-color: #101426;
         display: grid;
         place-items: center;
         text-align: center;
+      }
+
+      .game-banner--image {
+        width: min(50vw, 500px);
+        aspect-ratio: auto;
+        display: block;
+        overflow: hidden;
+      }
+
+      .game-banner--image img {
+        display: block;
+        width: 100%;
+        height: auto;
       }
       
       .game-banner p {
@@ -239,6 +396,7 @@
         align-items: center;
         gap: 12px;
         flex-wrap: wrap;
+        margin-top: auto;
       }
 
       .site-footer p {
@@ -426,7 +584,15 @@
 
       @media (min-width: 1024px) {
         .game-banner {
-          width: min(40vw, 880px);
+          width: min(20vw, 480px);
+        }
+
+        .game-banner--image {
+          width: min(16vw, 380px);
+        }
+
+        .game-card .game-genre {
+          font-size: 0.9rem;
         }
 
         .gallery-main {
@@ -455,12 +621,26 @@
     </header>
 
     <main>
-      <section class="games-section" id="games" aria-labelledby="games-heading">
-
-        <article class="game-card" id="game-1">
-          <div class="game-banner" aria-label="ゲーム１のバナー">
-            <p>ピクセルナイトアドベンチャー</p>
+      <section class="game-picker" aria-labelledby="games-heading">
+        <h2 id="games-heading">展示ゲーム一覧</h2>
+        <div class="game-picker-controls">
+          <div class="game-picker-track" aria-label="ゲーム一覧">
+            <button class="game-picker-card" type="button" aria-expanded="false" aria-controls="game-1">
+              <img src="img/pixelknight/pixelknight_logo.png" alt="" />
+            </button>
+            <button class="game-picker-card" type="button" aria-expanded="false" aria-controls="game-2">
+              <img src="img/dotstep/banner1.png" alt="" />
+            </button>
+            <button class="game-picker-card" type="button" aria-expanded="false" aria-controls="game-3">
+              <span class="game-picker-card-title">サンプル</span>
+            </button>
           </div>
+        </div>
+      </section>
+
+      <section class="games-section" id="games" aria-label="選択したゲームの詳細">
+
+        <article class="game-card" id="game-1" hidden>
           <p class="game-genre">アクション</p>
           <div class="game-gallery" aria-label="ゲーム 1 のプレイ画像">
             <input class="gallery-choice" type="radio" name="game-1-gallery" id="game-1-image-1" checked />
@@ -499,15 +679,10 @@
             ※ファイルサイズが大きいため<br>起動には少し時間がかかります<br>
             ※ゲーム起動時に<br>暫く音が出ないことがありますが、<br>少し待てば流れます
           </p>
+          <button class="game-list-return" type="button">ゲーム一覧へ</button>
         </article>
 
-        <article class="game-card" id="game-2">
-          <div
-            class="game-banner"
-            aria-label="ゲーム２のバナー"
-            style="background-image: url('img/dotstep/banner.png'); background-size: cover; background-position: center;"
-          >
-          </div>
+        <article class="game-card" id="game-2" hidden>
           <p class="game-genre">音楽ゲーム</p>
           <div class="game-gallery" aria-label="ゲーム 2 のプレイ画像">
             <input class="gallery-choice" type="radio" name="game-2-gallery" id="game-2-image-1" checked />
@@ -517,7 +692,7 @@
             <div class="gallery-main">
               <div class="gallery-photo photo-1" style="--bg: url('img/dotstep/image0.png');"></div>
               <div class="gallery-photo photo-2" style="--bg: url('img/dotstep/image1.png');"></div>
-              <div class="gallery-photo photo-3" style="--bg: url('img/dotstep/image2.png');"></div>
+              <div class="gallery-photo photo-3" style="--bg: url('img/dotstep/image2.gif');"></div>
               <div class="gallery-photo photo-4" style="--bg: url('img/dotstep/image3.png');"></div>
               <button class="gallery-nav-button gallery-nav-button--previous" type="button" aria-label="前の画像">&lt;</button>
               <button class="gallery-nav-button gallery-nav-button--next" type="button" aria-label="次の画像">&gt;</button>
@@ -530,12 +705,10 @@
             </div>
           </div>
           <p>画面中央の丸の枠とノーツ（丸）が重なるときに<br>タイミングよくボタンを押す音楽ゲームです。</p>
+          <button class="game-list-return" type="button">ゲーム一覧へ</button>
         </article>
 
-        <article class="game-card" id="game-3">
-          <div class="game-banner" aria-label="ゲーム３のバナー">
-            <p>サンプル</p>
-          </div>
+        <article class="game-card" id="game-3" hidden>
           <p class="game-genre">（ジャンル）</p>
           <div class="game-gallery" aria-label="ゲーム 3 のプレイ画像">
             <input class="gallery-choice" type="radio" name="game-3-gallery" id="game-3-image-1" />
@@ -558,17 +731,298 @@
             </div>
           </div>
           <p>ゲームの内容や遊び方を簡単に紹介</p>
+          <button class="game-list-return" type="button">ゲーム一覧へ</button>
         </article>
       </section>
     </main>
 
     <footer class="site-footer">
-      <p>Re:Create</p>
-      <p>© 2026 麗陵祭</p>
+      <p>2026 麗陵祭</p>
+      <p>© Re:Create</p>
       <p>CC BY-NC-SA 4.0</p>
     </footer>
     <script>
-      document.querySelectorAll(".game-gallery").forEach((gallery) => {
+        const hero = document.querySelector(".hero");
+        if (hero) {
+          window.setTimeout(() => {
+            hero.classList.add("hero--condensed");
+          }, 2500);
+        }
+
+        const gamePickerTrack = document.querySelector(".game-picker-track");
+        const gamePickerCards = gamePickerTrack
+          ? [...gamePickerTrack.querySelectorAll(".game-picker-card")]
+          : [];
+        const gamePicker = document.querySelector(".game-picker");
+        const detailCloseTimers = new WeakMap();
+        const detailClosePromises = new WeakMap();
+        const detailCloseCallbacks = new WeakMap();
+        let returningToList = false;
+
+        const scrollPageToTop = () => new Promise((resolve) => {
+          const startY = window.scrollY;
+          if (startY <= 1 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            window.scrollTo({ top: 0, behavior: "instant" });
+            resolve();
+            return;
+          }
+
+          const duration = Math.min(1200, Math.max(600, startY * 0.32));
+          let startTime;
+          const animateScroll = (time) => {
+            startTime ??= time;
+            const progress = Math.min((time - startTime) / duration, 1);
+            const easedProgress = 1 - Math.pow(1 - progress, 3);
+            window.scrollTo({
+              top: Math.round(startY * (1 - easedProgress)),
+              behavior: "instant",
+            });
+
+            if (progress < 1) {
+              requestAnimationFrame(animateScroll);
+            } else {
+              resolve();
+            }
+          };
+          requestAnimationFrame(animateScroll);
+        });
+
+        const closeGameDetail = (detail, onClosed) => {
+          if (!detail || detail.hidden) {
+            onClosed?.();
+            return Promise.resolve();
+          }
+          if (detail.classList.contains("is-closing")) {
+            if (onClosed) detailCloseCallbacks.get(detail)?.push(onClosed);
+            return detailClosePromises.get(detail) ?? Promise.resolve();
+          }
+
+          detailCloseCallbacks.set(detail, onClosed ? [onClosed] : []);
+          let resolveClose;
+          const closePromise = new Promise((resolve) => {
+            resolveClose = resolve;
+          });
+          detailClosePromises.set(detail, closePromise);
+
+          const finishClosing = () => {
+            window.clearTimeout(detailCloseTimers.get(detail));
+            if (detail.classList.contains("is-closing")) {
+              detail.hidden = true;
+              detail.classList.remove("is-closing");
+            }
+            detailClosePromises.delete(detail);
+            const callbacks = detailCloseCallbacks.get(detail) ?? [];
+            detailCloseCallbacks.delete(detail);
+            callbacks.forEach((callback) => callback());
+            resolveClose();
+          };
+
+          const handleTransitionEnd = (event) => {
+            if (event.target !== detail || event.propertyName !== "opacity") return;
+            detail.removeEventListener("transitionend", handleTransitionEnd);
+            finishClosing();
+          };
+          detail.classList.remove("is-open");
+          detail.classList.add("is-closing");
+          detail.addEventListener("transitionend", handleTransitionEnd);
+
+          const closeFallbackDelay = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 500;
+          detailCloseTimers.set(detail, window.setTimeout(() => {
+            detail.removeEventListener("transitionend", handleTransitionEnd);
+            finishClosing();
+          }, closeFallbackDelay));
+          return closePromise;
+        };
+
+        const openGameDetail = (detail) => {
+          if (!detail) return;
+
+          window.clearTimeout(detailCloseTimers.get(detail));
+          detail.hidden = false;
+          detail.classList.remove("is-closing");
+          detail.getBoundingClientRect();
+          detail.classList.add("is-open");
+        };
+
+        document.querySelectorAll(".game-list-return").forEach((button) => {
+          button.addEventListener("click", async () => {
+            if (returningToList) return;
+            returningToList = true;
+
+            gamePickerTrack?.querySelectorAll(".game-picker-card").forEach((card) => {
+              card.classList.remove("is-selected");
+              card.classList.remove("is-dimmed");
+              card.setAttribute("aria-expanded", "false");
+            });
+
+            await scrollPageToTop();
+            gamePickerCards.forEach((card) => {
+              const detail = document.getElementById(card.getAttribute("aria-controls"));
+              closeGameDetail(detail);
+            });
+            returningToList = false;
+          });
+        });
+
+        if (gamePickerTrack && gamePickerCards.length > 0) {
+          let detailSwitchId = 0;
+
+          gamePickerCards.forEach((card, index) => {
+            card.dataset.gameIndex = String(index);
+          });
+
+          const cloneCards = () =>
+            gamePickerCards.map((card) => {
+              const clone = card.cloneNode(true);
+              clone.setAttribute("aria-hidden", "true");
+              clone.tabIndex = -1;
+              return clone;
+            });
+          const beforeClones = [...cloneCards(), ...cloneCards()];
+          const afterClones = [...cloneCards(), ...cloneCards()];
+
+          gamePickerTrack.prepend(...beforeClones);
+          gamePickerTrack.append(...afterClones);
+
+          const allPickerCards = [...gamePickerTrack.querySelectorAll(".game-picker-card")];
+          let cycleWidth = 0;
+          let recentering = false;
+          let animatingPicker = false;
+          let pickerAnimationId = 0;
+
+          const updateCycleWidth = () => {
+            const styles = getComputedStyle(gamePickerTrack);
+            const gap = parseFloat(styles.columnGap) || 0;
+            cycleWidth = gamePickerCards.reduce((total, card) => total + card.getBoundingClientRect().width, 0) +
+              gap * gamePickerCards.length;
+            gamePickerTrack.scrollLeft = gamePickerCards[0].offsetLeft;
+          };
+
+          const animateToLoopingPosition = (requestedTarget) => {
+            if (cycleWidth === 0) return;
+
+            cancelAnimationFrame(pickerAnimationId);
+            const originalStart = gamePickerCards[0].offsetLeft;
+            const cycleEnd = originalStart + cycleWidth;
+            let start = gamePickerTrack.scrollLeft;
+            let target = requestedTarget;
+
+            while (start < originalStart - 1) start += cycleWidth;
+            while (start >= cycleEnd - 1) start -= cycleWidth;
+            while (target < originalStart - 1) target += cycleWidth;
+            while (target >= cycleEnd - 1) target -= cycleWidth;
+
+            const duration = 350;
+            const startedAt = performance.now();
+            const animate = (now) => {
+              const progress = Math.min((now - startedAt) / duration, 1);
+              const easedProgress = progress * (2 - progress);
+              let nextPosition = start + (target - start) * easedProgress;
+
+              while (nextPosition < originalStart - 1) {
+                nextPosition += cycleWidth;
+                start += cycleWidth;
+                target += cycleWidth;
+              }
+              while (nextPosition >= cycleEnd - 1) {
+                nextPosition -= cycleWidth;
+                start -= cycleWidth;
+                target -= cycleWidth;
+              }
+
+              animatingPicker = true;
+              gamePickerTrack.scrollLeft = nextPosition;
+              animatingPicker = false;
+
+              if (progress < 1) {
+                pickerAnimationId = requestAnimationFrame(animate);
+              }
+            };
+
+            pickerAnimationId = requestAnimationFrame(animate);
+          };
+
+          gamePickerTrack.addEventListener("click", async (event) => {
+            const button = event.target.closest(".game-picker-card");
+            if (!button || !gamePickerTrack.contains(button)) return;
+
+            const gameIndex = Number(button.dataset.gameIndex);
+            const originalButton = gamePickerCards[gameIndex];
+            if (!originalButton) return;
+
+            const trackRect = gamePickerTrack.getBoundingClientRect();
+            const cardRect = button.getBoundingClientRect();
+            const centeredScrollLeft =
+              gamePickerTrack.scrollLeft +
+              cardRect.left +
+              cardRect.width / 2 -
+              trackRect.left -
+              trackRect.width / 2;
+            animateToLoopingPosition(centeredScrollLeft);
+
+            const wasExpanded = originalButton.getAttribute("aria-expanded") === "true";
+            const switchId = ++detailSwitchId;
+
+            allPickerCards.forEach((card) => {
+              const isSelected = !wasExpanded && Number(card.dataset.gameIndex) === gameIndex;
+              card.classList.toggle("is-selected", isSelected);
+              card.classList.toggle("is-dimmed", !wasExpanded && !isSelected);
+              card.setAttribute("aria-expanded", String(isSelected && card === originalButton));
+            });
+
+            const detailsToClose = gamePickerCards.map((card) =>
+              document.getElementById(card.getAttribute("aria-controls"))
+            );
+            const visibleDetails = detailsToClose.filter((detail) => detail && !detail.hidden);
+            let pendingCloseCount = visibleDetails.length;
+            let openedNextDetail = false;
+            const openNextDetail = () => {
+              if (openedNextDetail || wasExpanded || switchId !== detailSwitchId) return;
+              openedNextDetail = true;
+              const detail = document.getElementById(originalButton.getAttribute("aria-controls"));
+              if (!detail) return;
+              openGameDetail(detail);
+              const cardTop = window.scrollY + button.getBoundingClientRect().top;
+              window.scrollTo({ top: cardTop, behavior: "smooth" });
+            };
+            const onDetailClosed = () => {
+              pendingCloseCount -= 1;
+              if (pendingCloseCount === 0) openNextDetail();
+            };
+
+            detailsToClose.forEach((detail) => {
+              closeGameDetail(detail, visibleDetails.includes(detail) ? onDetailClosed : undefined);
+            });
+
+            if (!pendingCloseCount && !wasExpanded) {
+              openNextDetail();
+            }
+            });
+
+          gamePickerTrack.addEventListener("scroll", () => {
+            if (recentering || animatingPicker || cycleWidth === 0) return;
+
+            const originalStart = gamePickerCards[0].offsetLeft;
+            const afterCloneStart = originalStart + cycleWidth;
+            const currentScrollLeft = gamePickerTrack.scrollLeft;
+
+            if (currentScrollLeft < originalStart - 1 || currentScrollLeft >= afterCloneStart - 1) {
+              recentering = true;
+              while (gamePickerTrack.scrollLeft < originalStart - 1) {
+                gamePickerTrack.scrollLeft += cycleWidth;
+              }
+              while (gamePickerTrack.scrollLeft >= afterCloneStart - 1) {
+                gamePickerTrack.scrollLeft -= cycleWidth;
+              }
+              recentering = false;
+            }
+          }, { passive: true });
+
+          window.addEventListener("resize", updateCycleWidth);
+          updateCycleWidth();
+        }
+
+        document.querySelectorAll(".game-gallery").forEach((gallery) => {
         const choices = [...gallery.querySelectorAll(".gallery-choice")];
         const photos = choices.map((_, index) => gallery.querySelector(`.photo-${index + 1}`));
         const initiallySelected = choices.findIndex((choice) => choice.checked);
@@ -580,6 +1034,7 @@
         const updateGalleryGlow = (photo) => {
           if (!galleryMain || !photo) return;
 
+          const requestId = ++glowRequestId;
           const image = getComputedStyle(photo).backgroundImage;
           const imageUrl = image.match(/^url\(["']?(.*?)["']?\)$/)?.[1];
           if (!imageUrl) {
@@ -587,7 +1042,6 @@
             return;
           }
 
-          const requestId = ++glowRequestId;
           const cachedColor = colorCache.get(imageUrl);
           if (cachedColor) {
             galleryMain.style.setProperty("--glow-color", cachedColor);
@@ -732,28 +1186,6 @@
           source.src = imageUrl;
         });
       });
-
-      const firstGameCard = document.querySelector("#game-1");
-      if (firstGameCard && window.scrollY === 0) {
-        const interactionEvents = ["pointerdown", "touchstart", "wheel", "keydown", "scroll"];
-        let autoScrollTimer;
-
-        const cancelAutoScroll = () => {
-          window.clearTimeout(autoScrollTimer);
-          interactionEvents.forEach((eventName) => {
-            window.removeEventListener(eventName, cancelAutoScroll);
-          });
-        };
-
-        interactionEvents.forEach((eventName) => {
-          window.addEventListener(eventName, cancelAutoScroll, { once: true, passive: true });
-        });
-
-        autoScrollTimer = window.setTimeout(() => {
-          cancelAutoScroll();
-          firstGameCard.scrollIntoView({ behavior: "smooth", block: "start" });
-        }, 3500);
-      }
     </script>
   </body>
 </html>
