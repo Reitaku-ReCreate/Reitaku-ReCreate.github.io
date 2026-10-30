@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&family=Zen+Kaku+Gothic+New:wght@700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Kosugi+Maru&family=Zen+Kaku+Gothic+New:wght@700&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -25,7 +25,7 @@
         min-height: 100vh;
         min-height: 100svh;
         margin: 0;
-        font-family: Arial, "Kosugi Maru", sans-serif;
+        font-family: Arial, "BIZ UDPGothic", sans-serif;
         color: #fff;
         background:
           radial-gradient(ellipse 72% 58% at 12% 24%, rgba(72, 110, 235, 0.152), transparent 72%),
@@ -50,7 +50,7 @@
         text-align: center;
         padding: 24px;
         transform: translateY(-30px);
-        animation: hero-fade-in 2s ease-out 0.2s both;
+        animation: hero-fade-in 1.5s ease-out 0.2s both;
         transition: min-height 1.2s ease, transform 1.2s ease;
       }
 
@@ -62,7 +62,7 @@
 
       .subhero {
         color: #ffffff9c;
-        animation: hero-fade-in 1.5s ease-out 1s both;
+        animation: hero-fade-in 1s ease-out 1s both;
       }
 
       @keyframes hero-fade-in {
@@ -123,7 +123,7 @@
         flex: 1;
         gap: 16px;
         overflow-x: auto;
-        padding: 8px 4px 16px;
+        padding: 8px 4px 8px;
         scroll-snap-type: none;
         scrollbar-width: none;
       }
@@ -155,9 +155,11 @@
         filter: grayscale(0.2) blur(0.5px);
       }
 
-      .game-picker-card:hover {
-        transform: translateY(-3px);
-        background-color: rgba(255, 255, 255, 0.1);
+      @media (hover: hover) and (pointer: fine) {
+        .game-picker-card:hover {
+          transform: translateY(-3px);
+          background-color: rgba(255, 255, 255, 0.1);
+        }
       }
 
       .game-picker-card.is-selected {
@@ -369,7 +371,7 @@
 
       .game-card p {
         max-width: 36rem;
-        margin: 16px auto 24px;
+        margin: 8px auto 24px;
         padding: 30px 24px 40px;
         text-align: center;
         font-size: clamp(1rem, 2.5vw, 1.25rem);
@@ -387,7 +389,14 @@
 
       #game-1 > p:not(.game-genre) {
         margin: 8px auto;
-        padding: 8px 24px;
+        padding: 0 24px;
+      }
+
+      #game-3 > p:not(.game-genre),
+      #game-4 > p:not(.game-genre),
+      #game-5 > p:not(.game-genre) {
+        margin: 8px auto;
+        padding: 0px 24px;
       }
       
       .site-footer {
@@ -459,7 +468,7 @@
         display: flex;
         gap: 4px;
         overflow-x: auto;
-        padding: 0 19px 12px;
+        padding: 0 19px 6px;
         scroll-snap-type: x mandatory;
         scroll-behavior: smooth;
         scrollbar-width: thin;
@@ -499,8 +508,15 @@
       #game-2-image-4:checked ~ .gallery-main .photo-4,
       #game-3-image-1:checked ~ .gallery-main .photo-1,
       #game-3-image-2:checked ~ .gallery-main .photo-2,
-      #game-3-image-3:checked ~ .gallery-main .photo-3,
-      #game-3-image-4:checked ~ .gallery-main .photo-4 {
+      #game-4-image-1:checked ~ .gallery-main .photo-1,
+      #game-4-image-2:checked ~ .gallery-main .photo-2,
+      #game-4-image-3:checked ~ .gallery-main .photo-3,
+      #game-5-image-1:checked ~ .gallery-main .photo-1,
+      #game-5-image-2:checked ~ .gallery-main .photo-2,
+      #game-5-image-3:checked ~ .gallery-main .photo-3,
+      #game-5-image-4:checked ~ .gallery-main .photo-4,
+      #game-5-image-5:checked ~ .gallery-main .photo-5,
+      #game-5-image-6:checked ~ .gallery-main .photo-6 {
         display: grid;
       }
 
@@ -573,8 +589,15 @@
       #game-2-image-4:checked ~ .gallery-thumbnails label[for="game-2-image-4"],
       #game-3-image-1:checked ~ .gallery-thumbnails label[for="game-3-image-1"],
       #game-3-image-2:checked ~ .gallery-thumbnails label[for="game-3-image-2"],
-      #game-3-image-3:checked ~ .gallery-thumbnails label[for="game-3-image-3"],
-      #game-3-image-4:checked ~ .gallery-thumbnails label[for="game-3-image-4"] {
+      #game-4-image-1:checked ~ .gallery-thumbnails label[for="game-4-image-1"],
+      #game-4-image-2:checked ~ .gallery-thumbnails label[for="game-4-image-2"],
+      #game-4-image-3:checked ~ .gallery-thumbnails label[for="game-4-image-3"],
+      #game-5-image-1:checked ~ .gallery-thumbnails label[for="game-5-image-1"],
+      #game-5-image-2:checked ~ .gallery-thumbnails label[for="game-5-image-2"],
+      #game-5-image-3:checked ~ .gallery-thumbnails label[for="game-5-image-3"],
+      #game-5-image-4:checked ~ .gallery-thumbnails label[for="game-5-image-4"],
+      #game-5-image-5:checked ~ .gallery-thumbnails label[for="game-5-image-5"],
+      #game-5-image-6:checked ~ .gallery-thumbnails label[for="game-5-image-6"] {
         position: relative;
         z-index: 1;
         border: 4px solid #60aaff;
@@ -632,7 +655,13 @@
               <img src="img/dotstep/banner1.png" alt="" />
             </button>
             <button class="game-picker-card" type="button" aria-expanded="false" aria-controls="game-3">
-              <span class="game-picker-card-title">サンプル</span>
+              <img src="img/swingcube/banner.png" alt="" />
+            </button>
+            <button class="game-picker-card" type="button" aria-expanded="false" aria-controls="game-4">
+              <img src="img/LineBoard/logo.png" alt="" />
+            </button>
+            <button class="game-picker-card" type="button" aria-expanded="false" aria-controls="game-5">
+              <img src="img/Minecraft/logo_Minecraft.png" alt="" />
             </button>
           </div>
         </div>
@@ -709,30 +738,88 @@
         </article>
 
         <article class="game-card" id="game-3" hidden>
-          <p class="game-genre">（ジャンル）</p>
+          <p class="game-genre">プラットフォーマー</p>
           <div class="game-gallery" aria-label="ゲーム 3 のプレイ画像">
             <input class="gallery-choice" type="radio" name="game-3-gallery" id="game-3-image-1" />
             <input class="gallery-choice" type="radio" name="game-3-gallery" id="game-3-image-2" checked />
-            <input class="gallery-choice" type="radio" name="game-3-gallery" id="game-3-image-3" />
-            <input class="gallery-choice" type="radio" name="game-3-gallery" id="game-3-image-4" />
             <div class="gallery-main">
-              <div class="gallery-photo photo-1">大きい画像 1</div>
-              <div class="gallery-photo photo-2" style="--bg: url('img/img3.gif');"></div>
-              <div class="gallery-photo photo-3" style="--bg: url('img/img2.jpg');"></div>
-              <div class="gallery-photo photo-4" style="--bg: url('img/img1.jpg');"></div>
+              <div class="gallery-photo photo-1" style="--bg: url('img/swingcube/swingcube01.png');"></div>
+              <div class="gallery-photo photo-2" style="--bg: url('img/swingcube/swingcube02.png');"></div>
               <button class="gallery-nav-button gallery-nav-button--previous" type="button" aria-label="前の画像">&lt;</button>
               <button class="gallery-nav-button gallery-nav-button--next" type="button" aria-label="次の画像">&gt;</button>
             </div>
             <div class="gallery-thumbnails" aria-label="画像を選択">
               <label class="game-image-placeholder" for="game-3-image-1">画像 1</label>
               <label class="game-image-placeholder" for="game-3-image-2">画像 2</label>
-              <label class="game-image-placeholder" for="game-3-image-3">画像 3</label>
-              <label class="game-image-placeholder" for="game-3-image-4">画像 4</label>
             </div>
           </div>
-          <p>ゲームの内容や遊び方を簡単に紹介</p>
+          <p>フックを使って障害物を乗り越えよう！<br>
+              wasdで動こう<br>
+              緑のブロックに右クリック！<br>真っすぐ向かっていくよ<br>
+              緑のブロックに左クリック！<br>振り子のように動けるよ</p>
+              <p>三角のブロックでリスポーンを更新<br>
+              赤のブロックに触れるとアウト<br>
+              水色のブロックでワープ<br>
+              紫のブロックに触れてクリア</p>
           <button class="game-list-return" type="button">ゲーム一覧へ</button>
         </article>
+
+        <article class="game-card" id="game-4" hidden>
+          <p class="game-genre">タワーディフェンス×配線パズル</p>
+          <div class="game-gallery" aria-label="ゲーム 4 のプレイ画像">
+            <input class="gallery-choice" type="radio" name="game-4-gallery" id="game-4-image-1" checked />
+            <input class="gallery-choice" type="radio" name="game-4-gallery" id="game-4-image-2" />
+            <input class="gallery-choice" type="radio" name="game-4-gallery" id="game-4-image-3" />
+            <div class="gallery-main">
+              <div class="gallery-photo photo-1" style="--bg: url('img/LineBoard/playing01.png');"></div>
+              <div class="gallery-photo photo-2" style="--bg: url('img/LineBoard/playing02.png');"></div>
+              <div class="gallery-photo photo-3" style="--bg: url('img/LineBoard/playing03.png');"></div>
+              <button class="gallery-nav-button gallery-nav-button--previous" type="button" aria-label="前の画像">&lt;</button>
+              <button class="gallery-nav-button gallery-nav-button--next" type="button" aria-label="次の画像">&gt;</button>
+            </div>
+            <div class="gallery-thumbnails" aria-label="画像を選択">
+              <label class="game-image-placeholder" for="game-4-image-1">画像 1</label>
+              <label class="game-image-placeholder" for="game-4-image-2">画像 2</label>
+              <label class="game-image-placeholder" for="game-4-image-3">画像 3</label>
+            </div>
+          </div>
+          <p>敵を迎撃する「ユニット」と、<br>ユニットを強化する「パワー」、<br>ユニットとパワーを繋ぐ「ライン」の3つを<br>効率よく設置し、<br>中央のタワーを迫りくる敵から守りきれ。</p>
+          <p>短時間でサクッと遊べる「カジュアル」と、<br>より歯ごたえのある難易度の「チャレンジ」の2つのモードを選んで遊べます。</p>
+          <button class="game-list-return" type="button">ゲーム一覧へ</button>
+        </article>
+
+        <article class="game-card" id="game-5" hidden>
+          <p class="game-genre">MOD</p>
+          <div class="game-gallery" aria-label="ゲーム 5 のプレイ画像">
+            <input class="gallery-choice" type="radio" name="game-5-gallery" id="game-5-image-1" checked />
+            <input class="gallery-choice" type="radio" name="game-5-gallery" id="game-5-image-2" />
+            <input class="gallery-choice" type="radio" name="game-5-gallery" id="game-5-image-3" />
+            <input class="gallery-choice" type="radio" name="game-5-gallery" id="game-5-image-4" />
+            <input class="gallery-choice" type="radio" name="game-5-gallery" id="game-5-image-5" />
+            <input class="gallery-choice" type="radio" name="game-5-gallery" id="game-5-image-6" />
+            <div class="gallery-main">
+              <div class="gallery-photo photo-1" style="--bg: url('img/Minecraft/magic01.png');"></div>
+              <div class="gallery-photo photo-2" style="--bg: url('img/Minecraft/magic02.png');"></div>
+              <div class="gallery-photo photo-3" style="--bg: url('img/Minecraft/magic03.png');"></div>
+              <div class="gallery-photo photo-4" style="--bg: url('img/Minecraft/magic04.png');"></div>
+              <div class="gallery-photo photo-5" style="--bg: url('img/Minecraft/magic05.png');"></div>
+              <div class="gallery-photo photo-6" style="--bg: url('img/Minecraft/magic06.png');"></div>
+              <button class="gallery-nav-button gallery-nav-button--previous" type="button" aria-label="前の画像">&lt;</button>
+              <button class="gallery-nav-button gallery-nav-button--next" type="button" aria-label="次の画像">&gt;</button>
+            </div>
+            <div class="gallery-thumbnails" aria-label="画像を選択">
+              <label class="game-image-placeholder" for="game-5-image-1">画像 1</label>
+              <label class="game-image-placeholder" for="game-5-image-2">画像 2</label>
+              <label class="game-image-placeholder" for="game-5-image-3">画像 3</label>
+              <label class="game-image-placeholder" for="game-5-image-4">画像 4</label>
+              <label class="game-image-placeholder" for="game-5-image-5">画像 5</label>
+              <label class="game-image-placeholder" for="game-5-image-6">画像 6</label>
+            </div>
+          </div>
+          <p>マイクラに魔法を追加しました。</p>
+          <button class="game-list-return" type="button">ゲーム一覧へ</button>
+        </article>
+
       </section>
     </main>
 
@@ -746,7 +833,7 @@
         if (hero) {
           window.setTimeout(() => {
             hero.classList.add("hero--condensed");
-          }, 2500);
+          }, 1500);
         }
 
         const gamePickerTrack = document.querySelector(".game-picker-track");
@@ -849,17 +936,7 @@
             if (returningToList) return;
             returningToList = true;
 
-            gamePickerTrack?.querySelectorAll(".game-picker-card").forEach((card) => {
-              card.classList.remove("is-selected");
-              card.classList.remove("is-dimmed");
-              card.setAttribute("aria-expanded", "false");
-            });
-
             await scrollPageToTop();
-            gamePickerCards.forEach((card) => {
-              const detail = document.getElementById(card.getAttribute("aria-controls"));
-              closeGameDetail(detail);
-            });
             returningToList = false;
           });
         });
@@ -889,53 +966,65 @@
           let recentering = false;
           let animatingPicker = false;
           let pickerAnimationId = 0;
+          let pickerInitialized = false;
 
           const updateCycleWidth = () => {
             const styles = getComputedStyle(gamePickerTrack);
             const gap = parseFloat(styles.columnGap) || 0;
             cycleWidth = gamePickerCards.reduce((total, card) => total + card.getBoundingClientRect().width, 0) +
               gap * gamePickerCards.length;
-            gamePickerTrack.scrollLeft = gamePickerCards[0].offsetLeft;
+            if (!pickerInitialized) {
+              const trackRect = gamePickerTrack.getBoundingClientRect();
+              const firstCardRect = gamePickerCards[0].getBoundingClientRect();
+              gamePickerTrack.scrollLeft +=
+                firstCardRect.left +
+                firstCardRect.width / 2 -
+                trackRect.left -
+                gamePickerTrack.clientWidth / 2;
+              pickerInitialized = true;
+              recenterPickerTrack();
+              return;
+            }
+
+            recenterPickerTrack();
+          };
+
+          const recenterPickerTrack = () => {
+            if (cycleWidth === 0) return;
+
+            const originalStart = gamePickerCards[0].offsetLeft;
+            const afterCloneStart = originalStart + cycleWidth;
+            recentering = true;
+            while (gamePickerTrack.scrollLeft < originalStart - 1) {
+              gamePickerTrack.scrollLeft += cycleWidth;
+            }
+            while (gamePickerTrack.scrollLeft >= afterCloneStart - 1) {
+              gamePickerTrack.scrollLeft -= cycleWidth;
+            }
+            recentering = false;
           };
 
           const animateToLoopingPosition = (requestedTarget) => {
             if (cycleWidth === 0) return;
 
             cancelAnimationFrame(pickerAnimationId);
-            const originalStart = gamePickerCards[0].offsetLeft;
-            const cycleEnd = originalStart + cycleWidth;
-            let start = gamePickerTrack.scrollLeft;
-            let target = requestedTarget;
-
-            while (start < originalStart - 1) start += cycleWidth;
-            while (start >= cycleEnd - 1) start -= cycleWidth;
-            while (target < originalStart - 1) target += cycleWidth;
-            while (target >= cycleEnd - 1) target -= cycleWidth;
+            animatingPicker = true;
+            const start = gamePickerTrack.scrollLeft;
+            const target = requestedTarget;
 
             const duration = 350;
             const startedAt = performance.now();
             const animate = (now) => {
               const progress = Math.min((now - startedAt) / duration, 1);
               const easedProgress = progress * (2 - progress);
-              let nextPosition = start + (target - start) * easedProgress;
-
-              while (nextPosition < originalStart - 1) {
-                nextPosition += cycleWidth;
-                start += cycleWidth;
-                target += cycleWidth;
-              }
-              while (nextPosition >= cycleEnd - 1) {
-                nextPosition -= cycleWidth;
-                start -= cycleWidth;
-                target -= cycleWidth;
-              }
-
-              animatingPicker = true;
-              gamePickerTrack.scrollLeft = nextPosition;
-              animatingPicker = false;
+              gamePickerTrack.scrollLeft = start + (target - start) * easedProgress;
 
               if (progress < 1) {
                 pickerAnimationId = requestAnimationFrame(animate);
+              } else {
+                pickerAnimationId = 0;
+                animatingPicker = false;
+                recenterPickerTrack();
               }
             };
 
@@ -983,7 +1072,7 @@
               if (!detail) return;
               openGameDetail(detail);
               const cardTop = window.scrollY + button.getBoundingClientRect().top;
-              window.scrollTo({ top: cardTop, behavior: "smooth" });
+              window.scrollTo({ top: cardTop - 2, behavior: "smooth" });
             };
             const onDetailClosed = () => {
               pendingCloseCount -= 1;
@@ -1001,21 +1090,7 @@
 
           gamePickerTrack.addEventListener("scroll", () => {
             if (recentering || animatingPicker || cycleWidth === 0) return;
-
-            const originalStart = gamePickerCards[0].offsetLeft;
-            const afterCloneStart = originalStart + cycleWidth;
-            const currentScrollLeft = gamePickerTrack.scrollLeft;
-
-            if (currentScrollLeft < originalStart - 1 || currentScrollLeft >= afterCloneStart - 1) {
-              recentering = true;
-              while (gamePickerTrack.scrollLeft < originalStart - 1) {
-                gamePickerTrack.scrollLeft += cycleWidth;
-              }
-              while (gamePickerTrack.scrollLeft >= afterCloneStart - 1) {
-                gamePickerTrack.scrollLeft -= cycleWidth;
-              }
-              recentering = false;
-            }
+            recenterPickerTrack();
           }, { passive: true });
 
           window.addEventListener("resize", updateCycleWidth);
